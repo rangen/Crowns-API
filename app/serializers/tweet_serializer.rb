@@ -1,5 +1,7 @@
 class TweetSerializer
-  include FastJsonapi::ObjectSerializer
-  attributes :snowflake_id, :created, :hashtags
-  has_many :hashtags
+  include JSONAPI::Serializer
+  set_key_transform :camel_lower
+  belongs_to :twitter_account
+
+  attributes :snowflake_id, :created, :in_reply_to
 end

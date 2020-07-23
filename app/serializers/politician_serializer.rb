@@ -4,4 +4,8 @@ class PoliticianSerializer
   has_many :twitter_accounts
   
   attributes :candidate_name, :party, :on_ballot, :photo_url, :id, :incumbent
+
+  attributes :has_tweets do |object|
+    !object.twitter_accounts.empty?
+  end
 end

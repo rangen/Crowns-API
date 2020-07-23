@@ -11,7 +11,7 @@ class AddressController < ApplicationController
           cd = 0
         else
           cd_key = response.divisions.keys.select{|k| k.split("/").find {|e| /cd:/ =~ e}}.first
-          cd = cd_key.split("cd:").last
+          cd = cd_key.split("cd:").last if cd_key
         end
 
         district = District.find_by(state_id: state.id, number: cd)
@@ -32,12 +32,12 @@ class AddressController < ApplicationController
           render json: {
                       reps: PoliticianSerializer.new(reps, options),
                       senators: senators.empty? ? nil : PoliticianSerializer.new(senators, options),
-                      address_info: location_info,
-                      cook_index:  district.cook_index,
-                      district_geo_json: geo_json
-                    }
+                      addressInfo: location_info,
+                      cookIndex:  district.cook_index,
+                      districtGeoJson: geo_json
+                    }, status: 200
         else
-          render json: {alert: "Unable to find a district from this address"}
+          render json: {alert: "Unable to find a district from this address"}, status: 400
         end
       end
 end

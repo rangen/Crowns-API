@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_17_183222) do
+ActiveRecord::Schema.define(version: 2020_07_30_202458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,27 +30,48 @@ ActiveRecord::Schema.define(version: 2020_07_17_183222) do
     t.integer "state_id", limit: 2
   end
 
-  create_table "issues", force: :cascade do |t|
-    t.text "name"
-    t.text "description"
-    t.date "vote_date"
+  create_table "financial_totals", id: false, force: :cascade do |t|
+    t.string "candidate_id"
+    t.string "candidate_name"
+    t.string "incumbent"
+    t.string "party_code"
+    t.string "party_name"
+    t.float "total_receipts"
+    t.float "transfers_from_comms"
+    t.float "total_disbursements"
+    t.float "transfers_to_comms"
+    t.float "cash_on_hand_start"
+    t.float "cash_on_hand_end"
+    t.float "contributions_from_candidate"
+    t.float "loans_from_candidate"
+    t.float "other_loans"
+    t.float "candidate_loan_repayments"
+    t.float "other_loan_repayments"
+    t.float "debts"
+    t.float "total_individual_contributions"
+    t.string "candidate_state"
+    t.string "district"
+    t.string "special_election"
+    t.string "primary_election"
+    t.string "runoff_election"
+    t.string "general_election"
+    t.string "general_percent"
+    t.float "contrib_from_other_comms"
+    t.float "contrib_from_party_comms"
+    t.datetime "coverage_end_date"
+    t.float "individual_refunds"
+    t.float "comm_refunds"
   end
 
   create_table "reps", id: :serial, force: :cascade do |t|
     t.text "candidate_id"
     t.text "candidate_name"
     t.text "party"
-    t.text "election_year"
     t.text "office_state"
     t.integer "district_name", limit: 2
     t.text "incumbent"
     t.text "status"
     t.text "principal_committee"
-    t.text "cand_address_1"
-    t.text "cand_address_2"
-    t.text "cand_city"
-    t.text "cand_state"
-    t.text "cand_zip"
     t.text "official_twitter"
     t.text "update_status"
     t.text "bp_link"
@@ -65,22 +86,34 @@ ActiveRecord::Schema.define(version: 2020_07_17_183222) do
     t.integer "state_id"
     t.integer "district_id"
     t.boolean "on_ballot"
+    t.float "total_receipts"
+    t.float "transfers_from_comms"
+    t.float "total_disbursements"
+    t.float "transfers_to_comms"
+    t.float "cash_on_hand_start"
+    t.float "cash_on_hand_end"
+    t.float "contributions_from_candidate"
+    t.float "loans_from_candidate"
+    t.float "other_loans"
+    t.float "candidate_loan_repayments"
+    t.float "other_loan_repayments"
+    t.float "debts"
+    t.float "total_individual_contributions"
+    t.float "contrib_from_other_comms"
+    t.float "contrib_from_party_comms"
+    t.datetime "coverage_end_date"
+    t.float "individual_refunds"
+    t.float "comm_refunds"
   end
 
   create_table "senators", id: :serial, force: :cascade do |t|
     t.text "candidate_id"
     t.text "candidate_name"
     t.text "party"
-    t.text "election_year"
     t.text "office_state"
     t.text "incumbent"
     t.text "status"
     t.text "principal_committee"
-    t.text "cand_address_1"
-    t.text "cand_address_2"
-    t.text "cand_city"
-    t.text "cand_state"
-    t.text "cand_zip"
     t.text "official_twitter"
     t.text "update_status"
     t.text "bp_link"
@@ -94,6 +127,24 @@ ActiveRecord::Schema.define(version: 2020_07_17_183222) do
     t.text "personal_website"
     t.integer "state_id"
     t.boolean "on_ballot"
+    t.float "total_receipts"
+    t.float "transfers_from_comms"
+    t.float "total_disbursements"
+    t.float "transfers_to_comms"
+    t.float "cash_on_hand_start"
+    t.float "cash_on_hand_end"
+    t.float "contributions_from_candidate"
+    t.float "loans_from_candidate"
+    t.float "other_loans"
+    t.float "candidate_loan_repayments"
+    t.float "other_loan_repayments"
+    t.float "debts"
+    t.float "total_individual_contributions"
+    t.float "contrib_from_other_comms"
+    t.float "contrib_from_party_comms"
+    t.datetime "coverage_end_date"
+    t.float "individual_refunds"
+    t.float "comm_refunds"
   end
 
   create_table "states", id: :serial, force: :cascade do |t|
@@ -125,13 +176,6 @@ ActiveRecord::Schema.define(version: 2020_07_17_183222) do
     t.boolean "oldest_saved"
     t.integer "tweet_count"
     t.index ["politician_id", "politician_type"], name: "index_twitter_accounts_on_politician_id_and_politician_type"
-  end
-
-  create_table "votes", force: :cascade do |t|
-    t.integer "caster_id"
-    t.string "caster_type"
-    t.integer "issue_id"
-    t.boolean "yea"
   end
 
 end

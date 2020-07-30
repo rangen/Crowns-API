@@ -1,0 +1,3 @@
+class FinancialTotal < ApplicationRecord
+    
+end

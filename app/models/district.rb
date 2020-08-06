@@ -2,6 +2,7 @@ class District < ApplicationRecord
     belongs_to :state
     has_many :reps
     has_one :cook_index, as: :location
+    has_many :webhits
 
     def full_name
         case number.to_i

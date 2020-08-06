@@ -1,6 +1,7 @@
 class AddressController < ApplicationController
   def random
     district = District.find(rand(435))
+    Webhit.create(client_ip: request.remote_ip, query: 'random', normalized: 'random', district: district)
     state = district.state
     reps = district.reps
     senators = state.senators
@@ -20,25 +21,26 @@ class AddressController < ApplicationController
                     }, status: 200
   end
   
-  def info        
-        response = $civic.representative_info_by_address(address: params[:address], levels: "country", fields: "divisions,normalized_input")
-        
-        normy = response.normalized_input
-        norm_address = "#{normy.line1}  #{normy.city}, #{normy.state} #{normy.zip}"
-      
-        state = State.find_by(abbreviation: normy.state)
-        
-        if %w[DE VT WY MT ND AK SD].include?(normy.state)
-          cd = 0
-        else
-          cd_key = response.divisions.keys.select{|k| k.split("/").find {|e| /cd:/ =~ e}}.first
-          cd = cd_key.split("cd:").last if cd_key
-        end
-
-        district = District.find_by(state_id: state.id, number: cd)
-        
-        if district #no district without state, so just check distrit
-          reps = district.reps  #add .fields to save query time?
+  def info
+    response = $civic.representative_info_by_address(address: params[:address], levels: "country", fields: "divisions,normalized_input")
+    
+    normy = response.normalized_input
+    norm_address = "#{normy.line1}  #{normy.city}, #{normy.state} #{normy.zip}"
+    
+    state = State.find_by(abbreviation: normy.state)
+    
+    if %w[DE VT WY MT ND AK SD].include?(normy.state)
+      cd = 0
+    else
+      cd_key = response.divisions.keys.select{|k| k.split("/").find {|e| /cd:/ =~ e}}.first
+      cd = cd_key.split("cd:").last if cd_key
+    end
+    
+    district = District.find_by(state_id: state.id, number: cd)
+    
+    if district #no district without state, so just check distrit
+      Webhit.create(client_ip: request.remote_ip, query: params[:address], normalized: norm_address, district: district)
+      reps = district.reps  #add .fields to save query time?
           
           senators = state.senators  #add .fields to save query time?
         

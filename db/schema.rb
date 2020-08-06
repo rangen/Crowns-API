@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_30_202458) do
+ActiveRecord::Schema.define(version: 2020_08_06_205709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -176,6 +176,14 @@ ActiveRecord::Schema.define(version: 2020_07_30_202458) do
     t.boolean "oldest_saved"
     t.integer "tweet_count"
     t.index ["politician_id", "politician_type"], name: "index_twitter_accounts_on_politician_id_and_politician_type"
+  end
+
+  create_table "webhits", force: :cascade do |t|
+    t.string "query"
+    t.string "client_ip"
+    t.datetime "created_at", null: false
+    t.string "normalized"
+    t.integer "district_id"
   end
 
 end

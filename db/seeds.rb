@@ -52,3 +52,14 @@
 #     disbursements = rep.total_individual_contributions - adjustment
 #     rep.update(total_disbursements: disbursements, total_receipts: receipts)
 # end
+
+# sens = Senator.all
+# reps = Rep.all
+
+# reps.each do |senator|
+#     name, state = senator.candidate_name.split(" (")
+#     if state
+#         puts "Updating #{senator.candidate_name}"
+#         senator.update(candidate_name: name)
+#     end
+# end

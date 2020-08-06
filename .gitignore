@@ -27,3 +27,4 @@
 /config/master.key
 /config/storage.yml
 /config/credentials.yml.enc
+crowns.dump

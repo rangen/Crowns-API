@@ -1,5 +1,26 @@
 class AddressController < ApplicationController
-    def info        
+  def random
+    district = District.find(rand(435))
+    state = district.state
+    reps = district.reps
+    senators = state.senators
+    location_info = {normalized_address: 'Random Address', when_is_primary: state.when_is_primary?, state: state.name, district: district.full_name}
+    folder_name = state.abbreviation + '-' + district.number
+          
+          geo_json = JSON.parse(File.read("public/districts/#{folder_name}/shape.geojson"))
+
+          options = {include: %i[twitter_accounts]}
+
+          render json: {
+                      reps: PoliticianSerializer.new(reps, options),
+                      senators: senators.empty? ? nil : PoliticianSerializer.new(senators, options),
+                      addressInfo: location_info,
+                      cookIndex:  district.cook_index,
+                      districtGeoJson: geo_json
+                    }, status: 200
+  end
+  
+  def info        
         response = $civic.representative_info_by_address(address: params[:address], levels: "country", fields: "divisions,normalized_input")
         
         normy = response.normalized_input

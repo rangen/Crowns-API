@@ -67,7 +67,6 @@ class AddressController < ApplicationController
           end
         end
       rescue Google::Apis::ClientError
-        byebug
         FailedQuery.create(client_ip: request.remote_ip, query: entered_address)
         render json: {alert: "Unable to find a district from this address"}, status: 400
       end

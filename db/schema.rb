@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_06_205709) do
+ActiveRecord::Schema.define(version: 2020_08_07_201710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,12 @@ ActiveRecord::Schema.define(version: 2020_08_06_205709) do
   create_table "districts", id: :serial, force: :cascade do |t|
     t.text "number"
     t.integer "state_id", limit: 2
+  end
+
+  create_table "failed_queries", force: :cascade do |t|
+    t.string "client_ip"
+    t.string "query"
+    t.datetime "created_at", null: false
   end
 
   create_table "financial_totals", id: false, force: :cascade do |t|
@@ -61,6 +67,13 @@ ActiveRecord::Schema.define(version: 2020_08_06_205709) do
     t.datetime "coverage_end_date"
     t.float "individual_refunds"
     t.float "comm_refunds"
+  end
+
+  create_table "random_queries", force: :cascade do |t|
+    t.string "client_ip"
+    t.integer "district_id"
+    t.string "district_name"
+    t.datetime "created_at", null: false
   end
 
   create_table "reps", id: :serial, force: :cascade do |t|
@@ -184,6 +197,7 @@ ActiveRecord::Schema.define(version: 2020_08_06_205709) do
     t.datetime "created_at", null: false
     t.string "normalized"
     t.integer "district_id"
+    t.string "district_name"
   end
 
 end

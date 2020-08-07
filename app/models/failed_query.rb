@@ -1,0 +1,2 @@
+class FailedQuery < ApplicationRecord
+end

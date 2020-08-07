@@ -1,7 +1,7 @@
 class AddressController < ApplicationController
   def random
     district = District.find(rand(435))
-    Webhit.create(client_ip: request.remote_ip, query: 'random', normalized: 'random', district: district)
+    RandomQuery.create(client_ip: request.remote_ip, district: district, district_name: district.full_name)
     state = district.state
     reps = district.reps
     senators = state.senators
@@ -39,7 +39,7 @@ class AddressController < ApplicationController
     district = District.find_by(state_id: state.id, number: cd)
     
     if district #no district without state, so just check distrit
-      Webhit.create(client_ip: request.remote_ip, query: params[:address], normalized: norm_address, district: district)
+      Webhit.create(client_ip: request.remote_ip, query: params[:address], normalized: norm_address, district_name: district.full_name, district: district)
       reps = district.reps  #add .fields to save query time?
           
           senators = state.senators  #add .fields to save query time?
@@ -60,6 +60,7 @@ class AddressController < ApplicationController
                       districtGeoJson: geo_json
                     }, status: 200
         else
+          FailedQuery.create(client_ip: request.remote_ip, query: params[:address])
           render json: {alert: "Unable to find a district from this address"}, status: 400
         end
       end

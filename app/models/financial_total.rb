@@ -1,3 +1,0 @@
-class FinancialTotal < ApplicationRecord
-    
-end

@@ -1,5 +1,6 @@
 class AddressController < ApplicationController
   def random
+    #for 'show me random district'
     district = District.find(rand(435))
     RandomQuery.create(client_ip: request.remote_ip, district: district, district_name: district.full_name)
     state = district.state

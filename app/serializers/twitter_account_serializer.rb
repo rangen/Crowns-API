@@ -5,6 +5,7 @@ class TwitterAccountSerializer
 
   attributes :handle, :use, :tweet_count
 
+  #sort tweets in reverse chronological order
   attributes :tweets do |object|
     object.tweets.sort do |x, y|
        y["created"] <=> x["created"]

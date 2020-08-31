@@ -6,7 +6,9 @@ class TwitterAccountSerializer
   attributes :handle, :use, :tweet_count
 
   attributes :tweets do |object|
-    object.tweets.map do |tweet|
+    object.tweets.sort do |x, y|
+       y["created"] <=> x["created"]
+    end.map do |tweet|
       {tweet_id: tweet.snowflake_id, in_reply_to: tweet.in_reply_to, created_at: tweet.created}
     end
   end
